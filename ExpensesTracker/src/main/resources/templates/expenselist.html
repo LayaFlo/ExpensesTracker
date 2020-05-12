@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>Expenses list</title>
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}" />
+</head>
+<body>
+	<nav class="navbar navbar-light bg-light">
+		<p class="navbar-brand">Welcome, [[${#httpServletRequest.remoteUser}]]</p>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-danger"/>
+		</form>
+	</nav>
+	<div class="container mt-5">
+	
+		<h1 class="display-4">Expenses</h1>
+		<table class="table table-striped">
+			<tr>
+				<th>Date</th>
+				<th>Description</th>
+				<th>Amount(€)</th>
+				<th>Category</th>
+			</tr>
+			<tr th:each="expense : ${expenses}">
+				<td th:text="${expense.date}"></td>
+				<td th:text="${expense.description}"></td>
+				<td th:text="${expense.amount}"></td>
+				<td th:text="${expense.category.name}"></td>
+				<td><a class="btn btn-danger"
+					th:href="@{/delete/{id}(id=${expense.id})}">Delete</a></td>
+				<td><a class="btn btn-secondary"
+					th:href="@{/edit/{id}(id=${expense.id})}">Edit</a></td>
+			</tr>
+			
+		</table>
+		<th:block th:if="${#lists.isEmpty(expenses)}">List of expenses is empty. You can add new expenses below.</th:block></br>
+		<a href="/add" class="btn btn-success">Add new expenses</a>
+	</div>
+</body>
+</html>
